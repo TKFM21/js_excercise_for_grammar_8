@@ -5,7 +5,7 @@
 //     2. 買い物
 //     3. 散歩
 // ここに変数「todos」を用意する
-
+let todos = ['掃除', '買い物', '散歩'];
 
 // ここに、Todoリストの機能を入力された文字によって使い分けるための文字列を配列で所持する
 //   - 変数名は「commands」とする
@@ -15,10 +15,10 @@
 //     3. 削除
 //     4. 終了
 // ここに変数「commands」を用意する
-
+const commands = ['確認', '追加', '削除', '終了'];
 
 // ここに、promptで入力したものを保持しておくための変数「input」を用意する
-
+let input = '確認';
 
 // ここに「終了」と入力されたらループを終了するwhileループを作成する
 //   - whileループの中でprompt関数を使って、値を入力できるようにして、入力された内容は変数「input」に格納する
@@ -29,10 +29,24 @@
 //     3. 「削除」と入力された時: deleteTodo関数を実行する
 //     4. 「終了」と入力された時: Consoleに'終了します'と表示して、Whileループを終了する
 //   - 「確認」「追加」「削除」「終了」以外がinputに代入されたら「「確認,追加,削除,終了」以外は入力できません」とConsoleに表示する
-
+while(true){
+    input = prompt('コマンドを入力：');
+    if (input === commands[0]){
+        showTodos();
+    } else if (input === commands[1]){
+        createTodo();
+    } else if (input === commands[2]){
+        deleteTodo();
+    } else if (input === commands[3]){
+        console.log('終了します');
+        break;
+    } else {
+        console.log('「確認,追加,削除,終了」以外は入力できません');
+    }
+}
 
 // ここでWhileループを抜けた後もタスク一覧を表示する(最終的なタスク一覧を確認するため)
-
+showTodos();
 
 /**
  * 「確認」が入力されたときに実行される関数「showTodos関数」を用意する
@@ -58,7 +72,19 @@
  *   タスクなし
  */
 // ここにshowTodos関数を作る
+function showTodos(){
+    console.log('==================');
+    console.log('====タスクリスト====');
+    console.log('==================');
 
+    if (todos.length <= 0){
+        console.log('タスクがありません');
+    } else {
+        todos.forEach((todo, index) => {
+            console.log(index + 1, todo);
+        });
+    }
+}
 
 /**
  * 「追加」が入力されたときに実行される関数「createTodo関数」を用意する
@@ -71,7 +97,16 @@
  *      3. showTodos関数を実行して、現在保持しているタスク一覧を表示する
  */
 // ここにcreateTodo関数を作る
-
+function createTodo() {
+    let newItem = prompt('タスクを入力してください');
+    if (newItem === '') {
+        console.log('何も入力されていないためスキップします');
+    } else {
+        todos.push(newItem);
+        alert('新しいタスクを追加しました。');
+        showTodos();
+    }
+}
 /**
  * 「削除」が入力されたときに実行される関数
  *    - promptを使って削除するタスクのインデックス番号を入力できるようにする
@@ -93,4 +128,17 @@
  *      3. showTodos関数を実行して、現在保持しているタスク一覧を表示する
  */
 // ここにdeleteTodo関数を作る
+function deleteTodo(todos) {
+    let deleteIdx = prompt('削除するタスクの番号を指定してください');
+    let deleteIdxNum = parseInt(deleteIdx, 10);
 
+    if (isNaN(deleteIdxNum)) {
+        alert('不正な値のためスキップします');
+    } else if (!(deleteIdxNum >= 1 && deleteIdxNum <= todos.length)) {
+        alert(`${deleteIdxNum}範囲外の値が入力されました。不正な値のためスキップします`);
+    } else {
+        let deleteItem = todos.splice(deleteIdxNum - 1, 1);
+        alert(`${deleteItem}を削除しました`);
+        showTodos();
+    }
+}
